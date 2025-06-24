@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestor de Eventos - Interfaz Validada</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #2c3e50;
+    }
+
+    form {
+      background-color: #ffffff;
+      padding: 20px;
+      margin: 20px auto;
+      width: 90%;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      color: #34495e;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    .mensaje {
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .exito {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+
+    hr {
+      margin: 40px auto;
+      width: 50%;
+      border: 0;
+      border-top: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Gestión de Eventos</h1>
+
+  <!-- Formulario de Evento -->
+  <h2>Registrar Evento</h2>
+  <form id="formEvento">
+    <label>Título:
+      <input type="text" name="titulo" placeholder="Ej: Conferencia sobre Inteligencia Artificial UTE">
+    </label>
+    <label>Invitados:
+      <input type="text" name="invitados" placeholder="Ej: Dr. Luis Gómez, Ing. Andrea Torres">
+    </label>
+    <label>Fecha:
+      <input type="date" name="fecha">
+    </label>
+    <label>Hora:
+      <input type="time" name="hora">
+    </label>
+    <label>Zona Horaria:
+      <input type="text" name="zona" placeholder="Ej: GMT-5">
+    </label>
+    <label>Descripción:
+      <textarea name="descripcion" rows="3" placeholder="Ej: Evento dirigido a estudiantes..."></textarea>
+    </label>
+    <label>Repetición:
+      <select name="repeticion">
+        <option value="">Seleccione</option>
+        <option value="diaria">Diaria</option>
+        <option value="semanal">Semanal</option>
+      </select>
+    </label>
+    <label>Recordatorio:
+      <input type="text" name="recordatorio" placeholder="Ej: 15 minutos antes">
+    </label>
+    <label>Clasificación:
+      <input type="text" name="clasificacion" placeholder="Ej: Taller, Conferencia">
+    </label>
+    <label>Lugar:
+      <input type="text" name="lugar" placeholder="Ej: Auditorio Edificio E">
+    </label>
+    <button type="submit">Guardar Evento</button>
+    <div class="mensaje" id="mensajeEvento"></div>
+  </form>
+
+  <hr>
+
+  <!-- Formulario de Ubicación -->
+  <h2>Registrar Ubicación</h2>
+  <form id="formUbicacion">
+    <label>Título:
+      <input type="text" name="titulo" placeholder="Ej: Laboratorio 3 - Edificio A">
+    </label>
+    <label>Dirección:
+      <input type="text" name="direccion" placeholder="Ej: Av. Universitaria y Calle 10">
+    </label>
+    <label>Latitud:
+      <input type="text" name="latitud" placeholder="Ej: -0.2108">
+    </label>
+    <label>Longitud:
+      <input type="text" name="longitud" placeholder="Ej: -78.4893">
+    </label>
+    <button type="submit">Guardar Ubicación</button>
+    <div class="mensaje" id="mensajeUbicacion"></div>
+  </form>
+
+  <hr>
+
+  <!-- Formulario de Contacto -->
+  <h2>Registrar Contacto</h2>
+  <form id="formContacto">
+    <label>Saludo:
+      <select name="saludo">
+        <option value="">Seleccione</option>
+        <option value="Sr.">Sr.</option>
+        <option value="Sra.">Sra.</option>
+        <option value="Mx.">Mx.</option>
+      </select>
+    </label>
+    <label>Nombre Completo:
+      <input type="text" name="nombre" placeholder="Ej: Carlos Antonio Díaz Alonso">
+    </label>
+    <label>ID:
+      <input type="text" name="id" placeholder="Ej: 1729384567">
+    </label>
+    <label>Correo:
+      <input type="email" name="correo" placeholder="Ej: carlos.diaz@ejemplo.edu.ec">
+    </label>
+    <label>Teléfono:
+      <input type="tel" name="telefono" placeholder="Ej: 0991234567">
+    </label>
+    <label>Fotografía:
+      <input type="file" name="foto">
+    </label>
+    <button type="submit">Guardar Contacto</button>
+    <div class="mensaje" id="mensajeContacto"></div>
+  </form>
+
+  <script>
+    function validarFormulario(formularioId, mensajeId) {
+      const form = document.getElementById(formularioId);
+      const mensaje = document.getElementById(mensajeId);
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault(); // evita que se recargue la página
+
+        const inputs = form.querySelectorAll('input, select, textarea');
+        let camposValidos = true;
+
+        inputs.forEach(input => {
+          if ((input.type !== 'file') && input.value.trim() === '') {
+            camposValidos = false;
+          }
+        });
+
+        if (!camposValidos) {
+          mensaje.textContent = "Por favor ingrese datos o información válida en cada campo.";
+          mensaje.className = "mensaje error";
+        } else {
+          mensaje.textContent = "Información guardada correctamente.";
+          mensaje.className = "mensaje exito";
+          form.reset(); // limpia el formulario después de guardar
+        }
+      });
+    }
+
+    validarFormulario("formEvento", "mensajeEvento");
+    validarFormulario("formUbicacion", "mensajeUbicacion");
+    validarFormulario("formContacto", "mensajeContacto");
+  </script>
+
+</body>
+</html>
